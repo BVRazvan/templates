@@ -1,0 +1,32 @@
+\chapter{State of the Art and Related Work}
+\label{chapter:soa&rw}
+
+\section{State of the Art}
+\label{sec:soa}
+So far, the server has been successfully run locally from source code, inside a container using a Dockerfile, and ported to Unikraft in binary compatibility mode.
+
+\section{Related Work}
+\label{sec:rw}
+Current efforts focus on understanding and implementing native execution for the server while analyzing similar projects that have tackled the same scenario.
+
+\section{Implementation Details}
+\label{sec:id}
+
+\subsection{Running in Binary Compatible Mode}
+\label{subsec:bincompat}
+Two files play an essential role:
+
+The \textbf{Dockerfile} is responsible for creating the unikernel filesystem. Initially, it compiles the OpenArena server from source as an ELF binary.
+Then, it constructs a minimal filesystem that includes only the necessary libraries while exposing a port to be used by the clients.
+
+The \textbf{Kraftfile} configures and builds the unikernel, incorporating the Dockerfile and libraries such as libelf, libukboot, libvfscore and lwip.
+
+For \textbf{building} and \textbf{running} the unikernel on x86 with KVM/QEMU, use:
+\\
+
+\lstset{caption=Build and run the OpenArena server, language=C}
+\begin{lstlisting}
+kraft build --no-cache --no-update --plat qemu --arch x86_64 .
+kraft run --rm -M 2048M -p 27960:27960/udp --plat qemu --arch x86_64 .
+\end{lstlisting}
+

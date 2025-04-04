@@ -9,6 +9,8 @@
 
 %\subsection{Project Scope}
 %\label{sub-sec:proj-scope}
+\section{Unikernels and Unikraft}
+\label{sec:uks}
 
 Unikernels\footnote{\url{https://wiki.xenproject.org/wiki/Unikernels}} are specialized, single-address-space operating systems that offer benefits over well-known alternatives in terms of security, size, and performance.
 Their core principle lie in stripping away unnecessary components of the kernel, leaving only the essential code to run a specific application.
@@ -17,7 +19,10 @@ Often compared to containers and virtual machines, these promise better resource
 Therefore, these results\footnote{\url{https://unikraft.org/docs/concepts/performance}} make unikernels an attractive choice for cloud computing and edge computing environments.
 
 
-In this context, Unikraft\footnote{\url{https://unikraft.org/}} emerges as a community that leverages the potential of unikernels, facilitating this process by providing modular, reusable components that can be customized for specific use cases, ensuring that only the required libraries and functionalities are included, further optimizing the binary image.
+In this context, Unikraft\footnote{\url{https://unikraft.org/}} emerges as an open-source community that leverages the potential of unikernels, facilitating this process by providing modular, reusable components that can be customized for specific use cases, ensuring that only the required libraries and functionalities are included, further optimizing the binary image.
+\\
+\\
+\\
 \fig[scale=0.4]{./src/img/vm-c-uk.png}{img:vm-c-uk}{Methods for running applications\footnote{\url{https://unikraft.org/docs/concepts}}}
 
 %This is an example of a footnote \footnote{\url{www.google.com}}. You can see here a reference to \labelindexref{Section}{sub-sec:proj-objectives}.
@@ -51,12 +56,12 @@ In this context, Unikraft\footnote{\url{https://unikraft.org/}} emerges as a com
 %We can also include listings like the following:
 
 % Inline Listing example
-%\lstset{language=make,caption=Application Makefile,label=lst:app-make}
-%\begin{lstlisting}
-%CSRCS = app.c
-%SRC_DIR =..
-%include $(SRC_DIR)/config/application.cfg
-%\end{lstlisting}
+% \lstset{language=make,caption=Application Makefile,label=lst:app-make}
+% \begin{lstlisting}
+% CSRCS = app.c
+% SRC_DIR =..
+% include $(SRC_DIR)/config/application.cfg
+% \end{lstlisting}
 
 %Listings can also be referenced. References don't have to include chapter/table/figure numbers... so we can have hyperlinks \labelref{like this}{lst:makefile-test}.
 

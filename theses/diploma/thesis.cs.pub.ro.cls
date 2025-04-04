@@ -10,7 +10,7 @@
 
 \let\ExecuteOptions@ltx\ExecuteOptions
 \def\ExecuteOptions#1{%
- \ExecuteOptions@ltx{a4paper,11pt,oneside,onecolumn,final}%
+ \ExecuteOptions@ltx{a4paper,10pt,oneside,onecolumn,final}%
 }%
 \LoadClassWithOptions{report}
 \let\ExecuteOptions\ExecuteOptions@ltx
@@ -25,7 +25,7 @@
 
 \usepackage{makeidx}
 
-\usepackage[top=3.5cm, bottom=3.5cm, left=3.5cm, right=3cm]{geometry}
+\usepackage[top=2cm, bottom=2cm, left=3cm, right=2.75cm]{geometry}
 \setlength{\headheight}{1.20cm}
 \setlength{\headsep}{0.50cm}
 

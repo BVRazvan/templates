@@ -1,0 +1,36 @@
+\chapter{Motivation and Objectives}
+\label{chapter:mot&obj}
+
+\section{Motivation}
+\label{sec:motivation}
+
+Currently, Unikraft lacks gaming-related projects.
+Therefore, integrating OpenArena extends its capabilities into a new domain: \textbf{gaming}.
+
+Beyond demonstrating unikernels' applicability to non-traditional use cases,
+this project also enables a direct comparison between binary compatibility mode and native mode.
+
+The resulting benchmarks will provide valuable insights into the trade-offs between ease of porting and performance gains.
+
+\section{Objectives}
+\label{sec:objecties}
+
+The key objectives of this thesis are:
+\begin{itemize}
+    \item Run an OpenArena server from scratch (source files).
+    \item Port the server to Unikraft in binary compatibility mode using the existing libelf library and a Dockerfile-based root filesystem.
+    \item Port the server to Unikraft in native mode by creating an external library containing the required source files and dependencies.
+    \item Perform benchmarks to compare the two approaches.
+\end{itemize}
+
+\section{Use Cases}
+\label{sec:usecases}
+
+\subsection{Main Use Case}
+\label{subsec:mainusecases}
+Run an OpenArena server on Unikraft as well as allowing clients to connect and play.
+
+\subsection{Other Use Cases}
+\label{subsec:otherusecases}
+Serve as a pioneer effort in bringing gaming applications to Unikraft, potentially leading to further developments in this area.
+
