@@ -10,7 +10,7 @@
 
 \let\ExecuteOptions@ltx\ExecuteOptions
 \def\ExecuteOptions#1{%
- \ExecuteOptions@ltx{a4paper,10pt,oneside,onecolumn,final}%
+ \ExecuteOptions@ltx{a4paper,11pt,oneside,onecolumn,final}%
 }%
 \LoadClassWithOptions{report}
 \let\ExecuteOptions\ExecuteOptions@ltx
@@ -250,3 +250,16 @@
 
 % mathematical formulas
 \usepackage{amsmath}
+
+% dots
+\usepackage{tocloft}
+
+% Custom command to set font size within a chapter
+\newcommand{\chapterfontsize}[2]{%
+  \AtBeginEnvironment{chapter}{%
+    \fontsize{#1}{#2}\selectfont%
+  }%
+  \AtEndEnvironment{chapter}{%
+    \fontsize{10}{12}\selectfont% Reset to default font size
+  }%
+}

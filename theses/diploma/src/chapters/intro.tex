@@ -1,84 +1,81 @@
 \chapter{Introduction}
 \label{chapter:intro}
 
-\textbf{This is just a demo file. It should not be used as a sample for a thesis.}\\
-\todo{Remove this line (this is a TODO)}
+%\textbf{This is just a demo file. It should not be used as a sample for a thesis.}\\
+%\todo{Remove this line (this is a TODO)}
 
-\section{Project Description}
-\label{sec:proj}
+%\section{Project Description}
+%\label{sec:proj}
 
-\subsection{Project Scope}
-\label{sub-sec:proj-scope}
+%\subsection{Project Scope}
+%\label{sub-sec:proj-scope}
 
-This thesis presents the \textbf{\project}.
+Unikernels\footnote{\url{https://wiki.xenproject.org/wiki/Unikernels}} are specialized, single-address-space operating systems that offer benefits over well-known alternatives in terms of security, size, and performance.
+Their core principle lie in stripping away unnecessary components of the kernel, leaving only the essential code to run a specific application.
 
-This is an example of a footnote \footnote{\url{www.google.com}}. You can see here a reference to \labelindexref{Section}{sub-sec:proj-objectives}.
-
-Here we have defined the CS abbreviation.\abbrev{CS}{Computer Science} and the UPB abbreviation.\abbrev{UPB}{University Politehnica of Bucharest}
-
-The main scope of this project is to qualify xLuna for use in critical systems.
+Often compared to containers and virtual machines, these promise better resource efficiency\footnote{\url{https://unikraft.org/docs/concepts/efficiency}} and security\footnote{\url{https://unikraft.org/docs/concepts/security}} due to their minimalistic nature.
+Therefore, these results\footnote{\url{https://unikraft.org/docs/concepts/performance}} make unikernels an attractive choice for cloud computing and edge computing environments.
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
+In this context, Unikraft\footnote{\url{https://unikraft.org/}} emerges as a community that leverages the potential of unikernels, facilitating this process by providing modular, reusable components that can be customized for specific use cases, ensuring that only the required libraries and functionalities are included, further optimizing the binary image.
+\fig[scale=0.4]{./src/img/vm-c-uk.png}{img:vm-c-uk}{Methods for running applications\footnote{\url{https://unikraft.org/docs/concepts}}}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
+%This is an example of a footnote \footnote{\url{www.google.com}}. You can see here a reference to \labelindexref{Section}{sub-sec:proj-objectives}.
 
+%Here we have defined the CS abbreviation.\abbrev{CS}{Computer Science} and the UPB abbreviation.\abbrev{UPB}{University Politehnica of Bucharest}
 
-\subsection{Project Objectives}
-\label{sub-sec:proj-objectives}
-
-We have now included \labelindexref{Figure}{img:report-framework}.
-
-\fig[scale=0.5]{src/img/reporting-framework.pdf}{img:report-framework}{Reporting Framework}
+%\subsection{Project Objectives}
+%\label{sub-sec:proj-objectives}
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
 
-We can also have citations like \cite{iso-odf}.
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
 
-\subsection{Related Work}
+%We can also have citations like \cite{iso-odf}.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
+%\subsection{Related Work}
 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
 
-We are now discussing the \textbf{Ultimate answer to all knowledge}.
-This line is particularly important it also adds an index entry for \textit{Ultimate answer to all knowledge}.\index{Ultimate answer to all knowledge}
 
-\subsection{Demo listings}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
 
-We can also include listings like the following:
+%We are now discussing the \textbf{Ultimate answer to all knowledge}.
+%This line is particularly important it also adds an index entry for \textit{Ultimate answer to all knowledge}.\index{Ultimate answer to all knowledge}
+
+%\subsection{Demo listings}
+
+%We can also include listings like the following:
 
 % Inline Listing example
-\lstset{language=make,caption=Application Makefile,label=lst:app-make}
-\begin{lstlisting}
-CSRCS = app.c
-SRC_DIR =..
-include $(SRC_DIR)/config/application.cfg
-\end{lstlisting}
+%\lstset{language=make,caption=Application Makefile,label=lst:app-make}
+%\begin{lstlisting}
+%CSRCS = app.c
+%SRC_DIR =..
+%include $(SRC_DIR)/config/application.cfg
+%\end{lstlisting}
 
-Listings can also be referenced. References don't have to include chapter/table/figure numbers... so we can have hyperlinks \labelref{like this}{lst:makefile-test}.
+%Listings can also be referenced. References don't have to include chapter/table/figure numbers... so we can have hyperlinks \labelref{like this}{lst:makefile-test}.
 
-\subsection{Tables}
+%\subsection{Tables}
 
-We can also have tables... like \labelindexref{Table}{table:reports}.
+%We can also have tables... like \labelindexref{Table}{table:reports}.
 
-\begin{center}
-\begin{table}[htb]
-  \caption{Generated reports - associated Makefile targets and scripts}
-  \begin{tabular}{l*{6}{c}r}
-    Generated report & Makefile target & Script \\
-    \hline
-    Full Test Specification & full_spec & generate_all_spec.py  \\
-    Test Report & test_report & generate_report.py  \\
-    Requirements Coverage & requirements_coverage &
-    generate_requirements_coverage.py   \\
-    API Coverage & api_coverage & generate_api_coverage.py  \\
-  \end{tabular}
-  \label{table:reports}
-\end{table}
-\end{center}
+%\begin{center}
+%\begin{table}[htb]
+%  \caption{Generated reports - associated Makefile targets and scripts}
+%  \begin{tabular}{l*{6}{c}r}
+%    Generated report & Makefile target & Script \\
+%    \hline
+%    Full Test Specification & full_spec & generate_all_spec.py  \\
+%    Test Report & test_report & generate_report.py  \\
+%    Requirements Coverage & requirements_coverage &
+%    generate_requirements_coverage.py   \\
+%    API Coverage & api_coverage & generate_api_coverage.py  \\
+%  \end{tabular}
+%  \label{table:reports}
+%\end{table}
+%\end{center}
