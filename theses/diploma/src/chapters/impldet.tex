@@ -1,0 +1,88 @@
+\chapter{Implementation Details}
+\label{chapter:impldet}
+
+\section{Running the Server locally}
+\subsection{Running the Server from Scratch}
+The initial step completed is building and running the OpenArena server locally from source files in order to test its functionality and to get to understand
+how the server works under the hood. \\ \\
+Therefore, the archive with its engine is downloaded from GitHub\footnote{\url{https://github.com/OpenArena/engine}}, as it is an open-source project. \\
+Besides this, there is another important archive which contains the main game code and assets (maps, models). It can be found on the official website\footnote{\url{https://openarena.ws/download.php}}. One important
+detail is that it must be placed at a default filepath: \textbf{.local/share/OpenArena/} unless another one is mentioned while creating the executable file. \\ \\
+Finally, the server application is compiled using the GNU make utility, offering multiple rules and targets for shaping the output to conform to specific needs. 
+\\
+\fig[scale=0.4]{./src/img/build_local.drawio.png}{img:build_local}{The big picture of build components}
+\\
+During runtime, the game content is loaded, providing various textures for maps, players and guns.
+\\
+\fig[scale=0.4]{./src/img/run_local.drawio.png}{img:run_local}{The big picture of run components}
+\\
+\subsection{Diving deep into Engine Components}
+The game engine has multiple components, each of them possess a particular role during the execution. \\
+The \textbf{server/} component contains the actual server-side game loop, clients commands management, snapshot generation and networking code, having the following key roles:
+\begin{itemize}
+    \item Tracks and updates connected clients;
+    \item Processes commands from clients;
+    \item Sends game state snapshot to clients;
+    \item Handles time steps and game simulation ticks.
+\end{itemize} \\
+The \textbf{game/} component contains the game logic virtual machine, having the following key roles:
+\begin{itemize}
+    \item Runs the actual game rules: player movement, combat, scoring;
+    \item This is sandboxed and isolated from the main engine for modularity and safety;
+\end{itemize} \\
+The \textbf{botlib/} component contains the services for computer-controlled bots (routing, decision-making), having the following key role:
+\begin{itemize}
+    \item Provides support for bot players.
+\end{itemize} \\
+The \textbf{qcommon/} component has code shared by both client and server side, like system handling, memory management and command parsing, having the following key roles:
+\begin{itemize}
+    \item Acts as glue between engine components;
+    \item Includes core logic for configuration system.
+\end{itemize} \\
+The \textbf{sys/} component abstracts OS-level functionality like timing, threading, file I/O and networking, having the following key roles:
+\begin{itemize}
+    \item Provides portable implementation of low-level tasks;
+    \item Required for the server to interact with OS.
+\end{itemize} \\
+The \textbf{asm/} component offers performance-critical assembly routines, including vector math, having the following key role:
+\begin{itemize}
+    \item Used where performance matters
+\end{itemize} \\
+The \textbf{null/} component exposes dummy implementations of rendering-related functions, having the following key role:
+\begin{itemize}
+    \item Allows server builds to run without full graphics initialization.
+\end{itemize} \\
+The \textbf{zlib/} component contains standard compression utility, having the following key roles:
+\begin{itemize}
+    \item Used for compressing message, files or game states;
+    \item Provides excellent bandwith and storage efficiency.
+\end{itemize} \\
+\fig[scale=0.3]{./src/img/engine_components.drawio.png}{img:engine_components}{The big picture of engine components}
+\section{Running in Binary Compatible Mode}
+Now, Unikraft comes into play. Therefore, there are two essential files required by the automated environment,
+called by kraft\footnote{\url{https://unikraft.org/docs/cli}}, Unikraft CLI companion tool. Using these, the process of creating an unikernel simplifies drastically.
+
+The \textbf{Dockerfile} is responsible for creating the unikernel filesystem. Initially, it downloads and compiles the OpenArena server from source as an ELF binary.
+Then, it constructs a minimal image that includes only the necessary libraries while exposing a port to be used by the clients.
+
+The \textbf{Kraftfile} configures and builds the unikernel, incorporating the Dockerfile and libraries such as libelf, libukboot, libvfscore and lwip
+which are libraries provided by Unikraft for particular usage. \\
+\lstset{caption=Dockerfile with minimal dependencies, language=C}        
+\begin{lstlisting}
+FROM scratch
+
+COPY --from=build /root/oa_ded.x86_64 /oa_ded.x86_64
+COPY --from=build /root/.local/share/OpenArena //.local/share/OpenArena
+COPY --from=build /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/libm.so.6
+COPY --from=build /lib/x86_64-linux-gnu/libc.so.6 /lib/x86_64-linux-gnu/libc.so.6
+COPY --from=build /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
+\end{lstlisting}
+
+For \textbf{building} and \textbf{running} the unikernel on x86 with KVM/QEMU, use:
+\\
+
+\lstset{caption=Build and run the OpenArena server, language=C}
+\begin{lstlisting}
+kraft build --no-cache --no-update --plat qemu --arch x86_64 .
+kraft run --rm -M 2048M -p 27960:27960/udp --plat qemu --arch x86_64 .
+\end{lstlisting}

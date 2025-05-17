@@ -1,32 +1,22 @@
-\chapter{State of the Art and Related Work}
+\chapter{Related Work and State of the Art}
 \label{chapter:soa&rw}
-
-\section{State of the Art}
-\label{sec:soa}
-So far, the server has been successfully run locally from source code, inside a container using a Dockerfile, and ported to Unikraft in binary compatibility mode.
 
 \section{Related Work}
 \label{sec:rw}
-Current efforts focus on understanding and implementing native execution for the server while analyzing similar projects that have tackled the same scenario.
-
-\section{Implementation Details}
-\label{sec:id}
-
-\subsection{Running in Binary Compatible Mode}
-\label{subsec:bincompat}
-Two files play an essential role:
-
-The \textbf{Dockerfile} is responsible for creating the unikernel filesystem. Initially, it compiles the OpenArena server from source as an ELF binary.
-Then, it constructs a minimal filesystem that includes only the necessary libraries while exposing a port to be used by the clients.
-
-The \textbf{Kraftfile} configures and builds the unikernel, incorporating the Dockerfile and libraries such as libelf, libukboot, libvfscore and lwip.
-
-For \textbf{building} and \textbf{running} the unikernel on x86 with KVM/QEMU, use:
-\\
-
-\lstset{caption=Build and run the OpenArena server, language=C}
-\begin{lstlisting}
-kraft build --no-cache --no-update --plat qemu --arch x86_64 .
-kraft run --rm -M 2048M -p 27960:27960/udp --plat qemu --arch x86_64 .
-\end{lstlisting}
-
+At the moment of writing, I did not find online evidence about any unikernel based on a game server, but I will briefly describe few unikernel projects which
+can be candidates for this job.
+\subsection{MirageOS}
+MirageOS\footnote{\url{https://mirage.io/}} is a library operating system written in the OCaml language that constructs unikernels for secure, high-performance networking applcations.d
+\subsection{IncludeOS}
+IncludeOS\footnote{\url{https://www.includeos.org/}} allows you to run your application in the cloud without an operating system. It adds operating system functionality to your application
+allowing you to crate performant, secure and resource efficient virtual machines.
+\subsection{OSv}
+OSv\footnote{\url{https://osv.io/}} is an open-source modular unikernel designed to run unmodified Linux applications securely on micro-VMs in the cloud.
+\section{State of the Art}
+\label{sec:soa}
+So far, the following steps have been completed:
+\begin{itemize}
+    \item Ran an OpenArena server from scratch (source files).
+    \item Ported the server to Unikraft in binary compatibility mode using the existing libelf library and a Dockerfile-based root filesystem.
+    \item Ported the server to Unikraft in native mode by creating an external library containing the required source files and dependencies.
+\end{itemize}
