@@ -10,14 +10,15 @@ Besides this, there is another important archive which contains the main game co
 detail is that it must be placed at a default filepath: \textbf{.local/share/OpenArena/} unless another one is mentioned while creating the executable file. \\ \\
 Finally, the server application is compiled using the GNU make utility, offering multiple rules and targets for shaping the output to conform to specific needs. 
 \\
-\fig[scale=0.4]{./src/img/build_local.drawio.png}{img:build_local}{The big picture of build components}
+\fig[scale=0.45]{./src/img/build_local.drawio.png}{img:build_local}{The big picture of build components}
 \\
 During runtime, the game content is loaded, providing various textures for maps, players and guns.
 \\
-\fig[scale=0.4]{./src/img/run_local.drawio.png}{img:run_local}{The big picture of run components}
+\fig[scale=0.45]{./src/img/run_local.drawio.png}{img:run_local}{The big picture of run components}
 \\
-\subsection{Diving deep into Engine Components}
-The game engine has multiple components, each of them possess a particular role during the execution. \\
+\subsection{Diving Deep into Engine Components}
+The OpenArena is structured into several modular components, each responsible for a specific aspect of the game's functionality.
+This separation ensures modularity, adaptability and scalability. \\ \\ 
 The \textbf{server/} component contains the actual server-side game loop, clients commands management, snapshot generation and networking code, having the following key roles:
 \begin{itemize}
     \item Tracks and updates connected clients;
@@ -57,32 +58,75 @@ The \textbf{zlib/} component contains standard compression utility, having the f
     \item Used for compressing message, files or game states;
     \item Provides excellent bandwith and storage efficiency.
 \end{itemize} \\
-\fig[scale=0.3]{./src/img/engine_components.drawio.png}{img:engine_components}{The big picture of engine components}
-\section{Running in Binary Compatible Mode}
-Now, Unikraft comes into play. Therefore, there are two essential files required by the automated environment,
-called by kraft\footnote{\url{https://unikraft.org/docs/cli}}, Unikraft CLI companion tool. Using these, the process of creating an unikernel simplifies drastically.
-
-The \textbf{Dockerfile} is responsible for creating the unikernel filesystem. Initially, it downloads and compiles the OpenArena server from source as an ELF binary.
-Then, it constructs a minimal image that includes only the necessary libraries while exposing a port to be used by the clients.
-
-The \textbf{Kraftfile} configures and builds the unikernel, incorporating the Dockerfile and libraries such as libelf, libukboot, libvfscore and lwip
-which are libraries provided by Unikraft for particular usage. \\
-\lstset{caption=Dockerfile with minimal dependencies, language=C}        
-\begin{lstlisting}
-FROM scratch
-
-COPY --from=build /root/oa_ded.x86_64 /oa_ded.x86_64
-COPY --from=build /root/.local/share/OpenArena //.local/share/OpenArena
-COPY --from=build /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/libm.so.6
-COPY --from=build /lib/x86_64-linux-gnu/libc.so.6 /lib/x86_64-linux-gnu/libc.so.6
-COPY --from=build /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
-\end{lstlisting}
-
-For \textbf{building} and \textbf{running} the unikernel on x86 with KVM/QEMU, use:
+\fig[scale=0.6]{./src/img/engine_components.drawio.png}{img:engine_components}{The big picture of engine components}
 \\
+\section{Running in Binary Compatibility Mode}
+Now, Unikraft comes into play. Thanks to its design, POSIX-and Linux-compatible, it is possible to run Linux binaries (ELFs) on top of Unikraft using the ELF Loader\footnote{\url{https://github.com/unikraft/app-elfloader}}. \\
+Therefore, there are two essential files required by the automated environment,
+called by kraft\footnote{\url{https://unikraft.org/docs/cli}}, a CLI companion tool. Using these, the process of creating an unikernel simplifies drastically.
 
-\lstset{caption=Build and run the OpenArena server, language=C}
+\subsection{Dockerfile}
+The \textbf{Dockerfile}\footnote{\url{https://docs.docker.com/reference/dockerfile/}} is responsible for creating the filesystem. As it follows the phylosophy of unikernels, it contains the minimal dependencies only,
+necessary and sufficient to run the application. \\
+The Docker image bundles an OpenArena ELF file, compiled from sources files, along with the OpenArena game code.
+To satisfy runtime dependencies identified by the \textit{ldd}\footnote{\url{https://man7.org/linux/man-pages/man1/ldd.1.html}} utility, the C library (libc) and the math library (libm) are included too.
+The image also exposes UDP port 27960, which is the default OpenArena game port, allowing clients to connect and play over the network. \\
+
+\fig[scale=0.45]{./src/img/dockerfile.drawio.png}{img:Dockerfile}{Dockerfile}
+\\
+\subsection{Kraftfile}
+The \textbf{Kraftfile}\footnote{\url{https://unikraft.org/docs/cli/reference/kraftfile/v0.6}} is the real coordinator. It configures the unikernel by incorporating individual components from the Unikraft environment
+and beyond it. Thus, it is important to understand the role of the modules, a short yet expanded description of several of them is mandatory.
+\begin{itemize}
+    \item The \textbf{libukboot} library takes care of bootstrapping, calling various constructors and lastly, the main function of the application;
+    \item The \textbf{libvfscore} library provides a generic interface of system calls related to file system management; 
+    \item The \textbf{libdevfs} library brings a special file system for registering, inspecting devices;
+    \item The \textbf{libramfs} library presents a RAM file system;
+    \item The \textbf{libukvmem} library adds support for virtual memory, automatically implying paging and interrupt routines mechanisms;
+    \item The \textbf{libukalloc} library is a abstraction for memory allocators;
+    \item The \textbf{libukallocbbudy} library is a memory allocator, based on the buddy\footnote{\url{https://www.kernel.org/doc/gorman/html/understand/understand009.html}} technique. This approach minimizes fragmentation while supporting dynamic memory allocation with a balance between speed and efficiency.
+    \item The \textbf{libposix-*} libraries offer compatibility with POSIX standards, providing essential abstractions for processes, sockets, file descriptors. They also include support for functionality like event polling, memory mapping and interprocess communication;
+    \item The \textbf{libuksched, libukschedcoop} libraries imply scheduling capabilities. Specifically, libukschedcoop implements a cooperative scheduler where tasks voluntarily yield control, making it suitable for applications with predictable workloads and minimal concurrency complexity;
+    \item The \textbf{libsyscall_shim}\footnote{\url{https://unikraft.org/docs/internals/syscall-shim}} library provides Linux-style mappings of system call numbers to actual system call handler functions; 
+    \item The \textbf{libuknetdev} library is an interface for network drivers;
+    \item The \textbf{liblwip} library is the Unikraft port of lwIP\footnote{\url{https://github.com/lwip-tcpip/lwip}}, a small independent implementation of the TCP/IP protocol suite. It supports essential networking protocols, including TCP, UDP, DHCP;
+    \item The \textbf{libelf} library is the Unikraft port of libelf from official ELF Tool Chain 0.7.1\footnote{\url{https://sourceforge.net/projects/elftoolchain/}}. It enables parsing, reading, and manipulation of ELF binaries;
+    \item The \textbf{app-elfloader}\footnote{\url{https://github.com/unikraft/app-elfloader}} library extends Unikraft’s capabilities by allowing it to load and execute unmodified Linux ELF binaries. This makes it easier to run existing applications within a unikernel environment without rewriting them;
+    \item The \textbf{Dockerfile} describes the a docker image, whose content is used as a file system.
+\end{itemize}
+\\
+\fig[scale=0.75]{./src/img/kraftfile.drawio.png}{img:Kraftfile}{Kraftfile}
+\\  
+\subsection{Build Phase}
+Having these two files set, the build phase can start. For \textbf{building} the unikernel on x86 with KVM/QEMU, the following command is used:
+\\
+\lstset{caption=Build the OpenArena server, language=C}
 \begin{lstlisting}
 kraft build --no-cache --no-update --plat qemu --arch x86_64 .
+\end{lstlisting}
+\\
+Internally, two things happen. First, a Docker image is generated based on the Dockerfile. This image is then converted into a CPIO archive to be integrated into the unikernel's file system.
+Subsequently, the unikernel itself is constructed by downloading and individually compiling the specified components, and assembling them into the final unikernel image.
+\\
+\fig[scale=0.6]{./src/img/build_phase.drawio.png}{img:build_phase}{Build Phase}
+\\  
+\subsection{Run Phase}
+Once the build is finished, the OpenArena server is ready to be launched. For \textbf{running} the unikernel on x86 with KVM/QEMU, the following command is used:
+\\
+\lstset{caption=Run the OpenArena server, language=C}
+\begin{lstlisting}
 kraft run --rm -M 2048M -p 27960:27960/udp --plat qemu --arch x86_64 .
 \end{lstlisting}
+\\
+During the running phase, the kraft tool leverages QEMU to virtualize the environment produced during the build stage. Within this virtualized runtime, the ELF Loader has a significant job: it is responsible for loading and preparing the OpenArena server for execution. \\
+This process begins after the Unikraft booting procedure has completed, marking the transition from system initialization to application-level control.
+This involves opening and analyzing the ELF binary using the libelf library. It includes reading the file headers, mapping the segments into memory using mmap, and setting appropriate memory protections. \\
+The data collected is then stored in a context structure that encapsulates all necessary runtime information. \\
+As soon as the context is fully populated, the ELF Loader uses it to create a new thread designated to run the server. \\
+After completing these steps, the thread is scheduled for execution, initiating the server startup funtions. \\
+\\
+\fig[scale=0.75]{./src/img/run_phase.drawio.png}{img:run_phase}{ELF Loader during Run Phase}
+\\  
+\section{Running in Native Compatibility Mode}
+\subsection{Build Phase}
+\subsection{Run Phase}
