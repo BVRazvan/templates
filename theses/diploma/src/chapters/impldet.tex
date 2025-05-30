@@ -17,7 +17,7 @@ During runtime, the game content is loaded, providing various textures for maps,
 \fig[scale=0.45]{./src/img/run_local.drawio.png}{img:run_local}{The big picture of run components}
 \\
 \subsection{Diving Deep into Engine Components}
-The OpenArena is structured into several modular components, each responsible for a specific aspect of the game's functionality.
+The OpenArena is structured into several modular components, each responsible for a specific aspect of the game functionality.
 This separation ensures modularity, adaptability and scalability. \\ \\ 
 The \textbf{server/} component contains the actual server-side game loop, clients commands management, snapshot generation and networking code, having the following key roles:
 \begin{itemize}
@@ -66,13 +66,13 @@ Therefore, there are two essential files required by the automated environment,
 called by kraft\footnote{\url{https://unikraft.org/docs/cli}}, a CLI companion tool. Using these, the process of creating an unikernel simplifies drastically.
 
 \subsection{Dockerfile}
-The \textbf{Dockerfile}\footnote{\url{https://docs.docker.com/reference/dockerfile/}} is responsible for creating the filesystem. As it follows the phylosophy of unikernels, it contains the minimal dependencies only,
+The \textbf{Dockerfile}\footnote{\url{https://docs.docker.com/reference/dockerfile/}} is responsible for creating the file system. As it follows the phylosophy of unikernels, it contains the minimal dependencies only,
 necessary and sufficient to run the application. \\
-The Docker image bundles an OpenArena ELF file, compiled from sources files, along with the OpenArena game code.
+The Docker image bundles an OpenArena ELF file, compiled from sources files, along with the OpenArena game code. \\
 To satisfy runtime dependencies identified by the \textit{ldd}\footnote{\url{https://man7.org/linux/man-pages/man1/ldd.1.html}} utility, the C library (libc) and the math library (libm) are included too.
 The image also exposes UDP port 27960, which is the default OpenArena game port, allowing clients to connect and play over the network. \\
 
-\fig[scale=0.45]{./src/img/dockerfile.drawio.png}{img:Dockerfile}{Dockerfile}
+\fig[scale=0.5]{./src/img/dockerfile.drawio.png}{img:Dockerfile}{Dockerfile}
 \\
 \subsection{Kraftfile}
 The \textbf{Kraftfile}\footnote{\url{https://unikraft.org/docs/cli/reference/kraftfile/v0.6}} is the real coordinator. It configures the unikernel by incorporating individual components from the Unikraft environment
@@ -91,7 +91,7 @@ and beyond it. Thus, it is important to understand the role of the modules, a sh
     \item The \textbf{libuknetdev} library is an interface for network drivers;
     \item The \textbf{liblwip} library is the Unikraft port of lwIP\footnote{\url{https://github.com/lwip-tcpip/lwip}}, a small independent implementation of the TCP/IP protocol suite. It supports essential networking protocols, including TCP, UDP, DHCP;
     \item The \textbf{libelf} library is the Unikraft port of libelf from official ELF Tool Chain 0.7.1\footnote{\url{https://sourceforge.net/projects/elftoolchain/}}. It enables parsing, reading, and manipulation of ELF binaries;
-    \item The \textbf{app-elfloader}\footnote{\url{https://github.com/unikraft/app-elfloader}} library extends Unikraft’s capabilities by allowing it to load and execute unmodified Linux ELF binaries. This makes it easier to run existing applications within a unikernel environment without rewriting them;
+    \item The \textbf{app-elfloader}\footnote{\url{https://github.com/unikraft/app-elfloader}} library extends Unikraft capabilities by allowing it to load and execute unmodified Linux ELF binaries. This makes it easier to run existing applications within a unikernel environment without rewriting them;
     \item The \textbf{Dockerfile} describes the a docker image, whose content is used as a file system.
 \end{itemize}
 \\
@@ -105,7 +105,7 @@ Having these two files set, the build phase can start. For \textbf{building} the
 kraft build --no-cache --no-update --plat qemu --arch x86_64 .
 \end{lstlisting}
 \\
-Internally, two things happen. First, a Docker image is generated based on the Dockerfile. This image is then converted into a CPIO archive to be integrated into the unikernel's file system.
+Internally, two things happen. First, a Docker image is generated based on the Dockerfile. This image is then converted into a CPIO archive to be integrated into the unikernel file system.
 Subsequently, the unikernel itself is constructed by downloading and individually compiling the specified components, and assembling them into the final unikernel image.
 \\
 \fig[scale=0.6]{./src/img/build_phase.drawio.png}{img:build_phase}{Build Phase}
@@ -128,5 +128,133 @@ After completing these steps, the thread is scheduled for execution, initiating 
 \fig[scale=0.75]{./src/img/run_phase.drawio.png}{img:run_phase}{ELF Loader during Run Phase}
 \\  
 \section{Running in Native Compatibility Mode}
+Running in native compatibility mode involves working with low-level tools and principles such as make, gcc, kconfig, and qemu directly.
+Unlike the previous approach, where the ELF loader handled the integration of applications into the unikernel, this responsibility now shifts to the developer.
+Specifically, the developer must manually include the source files intended to be part of the final unikernel image. \\ \\
+This method offers a finer degree of control over both the application being transformed into a unikernel and the kernel libraries included alongside it.
+As a result, users can tailor the unikernel more precisely to their specific use case, potentially improving performance and minimizing unnecessary overhead. \\ \\
+However, there is additional complexity introduced also.
+The developer must possess a strong understanding of the target application build process and compilation options, as well as a solid grasp of Unikraft architecture, build system, and available libraries.
+Only by carefully selecting and integrating the appropriate components can one produce a unikernel that is both functional and retains the key benefits of unikernels: rapid boot times, enhanced security, and minimal resource consumption. \\ \\
+This time, the native compatibility mode revolves around three files: Makefile, Makefile.uk and Config.uk.
+\subsection{Makefile}
+The Makefile file is used to specify the path of the Unikraft repository and other variables such as external libraries that the OpenArena server needs to use:
+\begin{itemize}
+    \item lib-musl presents the Unikraft port of musl\footnote{\url{https://musl.libc.org/}}, a C standard library built on top of the Linux system call API.
+    Its usage for the server is obvious, providing support for memory management, string manipulations and so on;
+    \item lib-lwip is the Unikraft port of the lwIP network stack which was also used in the previous chapter.
+    As the application has a client-server design and the communication is done over the network, importing it is obligatory;
+    \item lib-zlib integrates the Unikraft port of the zlib\footnote{\url{https://github.com/madler/zlib}}, a general purpose data compression library.
+    This allows the server to load the game code dinamically at runtime.
+\end{itemize}
+However, taking into consideration its rules, one can notice that this is a wrapper around the Unikraft core Makefile.
+\\
+\lstset{basicstyle=\small\ttfamily, caption=Makefile, language=C}
+\begin{lstlisting}
+UK_ROOT ?= $(PWD)/workdir/unikraft
+UK_BUILD ?= $(PWD)/workdir/build
+UK_APP ?= $(PWD)
+LIBS_BASE = $(PWD)/workdir/libs
+UK_LIBS ?= $(LIBS_BASE)/musl:$(LIBS_BASE)/lwip:$(LIBS_BASE)/zlib
+
+.PHONY: all
+
+all:
+	@$(MAKE) -C $(UK_ROOT) L=$(UK_LIBS) A=$(UK_APP) O=$(UK_BUILD)
+
+$(MAKECMDGOALS):
+	@$(MAKE) -C $(UK_ROOT) L=$(UK_LIBS) A=$(UK_APP) O=$(UK_BUILD) $(MAKECMDGOALS)
+\end{lstlisting}
+\\
+\subsection{Makefile.uk}
+The Makefile.uk file defines the source files required to build the OpenArena server.
+Therefore, it explicitly lists the paths to the source code, include directories as well as compiler flags using a well-documented syntax:
+\begin{itemize}
+    \item \textit{APP[NAME]_BASE} variable keeps the path to the source files directory;
+    \item \textit{APP[NAME]_CINCLUDES-y} variable brings together include directories for C files;
+    \item \textit{APP[NAME]_SRCS-y} variable includes source files;
+    \item \textit{APP[NAME]_[FILENAME]_FLAGS-y} variable instructs the compiler which flags to use for a given file.
+\end{itemize}
+This contrasts with binary compatibility mode where such information was automatically extracted by the app-elfloader from the server binary during runtime. \\ \\
+Recalling the components of the OpenArena engine described at the beginning of the chapter, these are now specified in this file in order to provide the same functionality.
+\\
+\lstset{basicstyle=\small\ttfamily, caption=Part of Makefile.uk, language=C, showstringspaces=false, keepspaces=true}
+\begin{lstlisting}
+$(eval $(call addlib,appopenarenaserver))
+
+CFLAGS_OA = -std=gnu11 -Wall -fno-strict-aliasing -Wimplicit -Wstrict-prototypes -pipe -DSTANDALONE -DPRODUCT_VERSION=\"3\" -Wformat=2 -Wno-format-zero-length -Wformat-security -Wno-format-nonliteral -Wstrict-aliasing=2 -Wmissing-format-attribute -Wdisabled-optimization -Werror-implicit-function-declaration -MMD -D__linux__
+
+OPTIMIZE_OA = -DNDEBUG -O3 -fomit-frame-pointer -funroll-loops -ffast-math -flto
+
+SERVER_CFLAGS_OA = -DUSE_VOIP
+
+APPOPENARENASERVER_CINCLUDES-y += -I$(APPOPENARENASERVER_BASE)/code/asm
+..
+APPOPENARENASERVER_CINCLUDES-y += -I$(APPOPENARENASERVER_BASE)/code/sys
+
+APPOPENARENASERVER_SRCS-y += $(APPOPENARENASERVER_BASE)/code/server/sv_bot.c
+APPOPENARENASERVER_SV_BOT_FLAGS-y += -DDEDICATED $(CFLAGS_OA) $(SERVER_CFLAGS_OA) $(OPTIMIZE_OA)
+
+..
+\end{lstlisting}
+\\
+\subsection{Config.uk}
+The Config.uk is a Kconfig-like configuration file that contributes entries to Unikraft Kconfig-base menu system.
+It allows users to enable or disable features via tools such as \textit{menuconfig}, and to set parameters and dependencies
+between components. Each entry represents a kernel module or library that provides specific mechanisms required by the unikernel. \\ \\
+In the case of the OpenArena server, these entries correspond to the necessary libraries that enable successful booting and runtime behavior.
+This file is included during the build process to render the configuration menu and to generate and parse the \textit{.config} file which holds the
+selected settings. \\ \\
+The libraries mentioned here are similar to those in the Kraftfile when using binary compatibility mode. In that mode, Kraftfile also allows the definition
+of Kconfig options.
+\\
+\lstset{basicstyle=\small\ttfamily, caption=Config.uk, language=C, showstringspaces=false, keepspaces=true}
+\begin{lstlisting}
+# Config OpenArena Server application
+
+config APPOPENARENASERVER
+bool "A server for OpenArena, a community-produced deathmatch FPS based of GPL idTech3 technology"
+default y
+    select LIBVIRTIO_BUS
+    select LIBVIRTIO_NET
+    select VIRTIO_DEVICE
+    select LIBUKBUS_PCI
+    select LIBUKBUS_PLATFORM
+    select LIBUKRANDOM_LCPU
+    select LIBUKRANDOM_CMDLINE_SEED
+    select LIBUKRANDOM_GETRANDOM
+    select LIBUKRANDOM_DEVFS
+    select LIBPOSIX_EVENTFD
+    select LIBPOSIX_LIBDL
+    select LIBPOSIX_USER
+    select LIBUKVMEM
+    select LIBPOSIX_MMAP
+    select LIBVFSCORE
+    select LIBVFSCORE_AUTOMOUNT_UP
+    select LIBRAMFS
+    select LIBUKCPIO
+    select LIBDEVFS
+    select LIBDEVFS_AUTOMOUNT
+    select LIBDEVFS_DEVSTDOUT
+    select LIBUKNETDEV_EINFO_LIBPARAM
+    select LIBMUSL
+    select LIBLWIP
+    select LWIP_DEBUG
+    select LWIP_UKNETDEV
+    select LWIP_TCP
+    select LWIP_WND_SCALE
+    select LWIP_TCP_KEEPALIVE
+    select LWIP_THREADS
+    select LWIP_SOCKET
+    select LWIP_AUTOIFACE
+    select LWIP_IPV4
+    select LWIP_IPV6
+    select LWIP_DHCP
+    select LWIP_DNS
+    select LIBZLIB
+\end{lstlisting}
+\\
 \subsection{Build Phase}
+Build
 \subsection{Run Phase}
+Run
