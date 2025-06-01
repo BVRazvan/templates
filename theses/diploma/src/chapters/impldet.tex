@@ -266,4 +266,41 @@ Finally, during the build process, all the Makefile.uk files (from the Unikraft 
 \fig[scale=0.4]{./src/img/build_local_native.png}{img:build_local_native}{Build Phase}
 \\  
 \subsection{Run Phase}
-Runa
+In the runtime phase, the focus is placed entirely on the OpenArena server.
+This results from the extra effort invested in the build stage where source files are incorporated individually, along with other various configurations. \\ \\
+For launching the server the following command is invoked:
+\\
+\lstset{basicstyle=\small\ttfamily, caption=Run Command, language=C, showstringspaces=false, keepspaces=true}
+\begin{lstlisting}
+sudo qemu-system-x86_64 \
+    -nographic \
+    -m 2048M \
+    -cpu max \
+    -kernel workdir/build/openarena-server_qemu-x86_64 \
+    -initrd initrd.cpio
+    -append "netdev.ip=172.44.0.2/24:172.44.0.1::: vfs.fstab=[\"initrd0:/:extract::ramfs=1:\"] -- +set dedicated 1 +map oa_dm5" \
+    -netdev bridge,id=en0,br=virbr0 \
+    -device virtio-net-pci,netdev=en0 \
+\end{lstlisting}
+\\
+As the command may appear quite complex at first glance, let's break it down into smaller, more manageable parts to better understand each component and
+its role in the virtual machine setup.
+\begin{itemize}
+    \item The first directive runs the command with root privileges, launching QEMU with x86_64 architecture emulation;
+    \item The second directive disables graphical output, redirecting console I/O to the terminal;
+    \item The third directive allocates 2GB of RAM to the virtual machine;
+    \item The forth directive tells QEMU to emulate a CPU with the maximal supported features of the host CPU, improving performance and compatibility;
+    \item The fifth directive specifies the kernel which resulted after the build phase;
+    \item The sixth directive loads the achived game code as the initial RAM disk.
+    \item The seventh directive appends command-line arguments serving multiple purposes. Firstly, it provides an IP Address and a default gateway to the VM. Secondly, it mounts the content
+    of the CPIO archive.
+    \item The eigth directive sets up networking bridging, connecting the VM to a existing host bridge network (virbr0), allowing it to appear on the same LAN as the host while
+    it also assigns an identifier (en0) to this network backend;
+    \item The ninth directive adds a VirtIO network device, backed by the same device (en0);
+\end{itemize}
+\\
+Following the boot sequence of the Unikraft unikernel, control is handed off directly to the OpenArena server.
+This marks a notable departure from the previous approach where the ELF Loader application was invoked first, adding overhead.
+\\
+\fig[scale=0.6]{./src/img/run_local_native.png}{img:run_local_native}{Run Phase}
+\\ 
