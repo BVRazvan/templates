@@ -1,10 +1,10 @@
 \chapter{Implementation Details}
 \label{chapter:impldet}
 
-\section{Running the Server locally}
-\subsection{Running the Server from Scratch}
+\section{Running the Server Locally}
 The initial step completed is building and running the OpenArena server locally from source files in order to test its functionality and to get to understand
-how the server works under the hood. \\ \\
+how the server works under the hood.
+\subsection{Running the Server from Scratch}
 Therefore, the archive with its engine is downloaded from GitHub\footnote{\url{https://github.com/OpenArena/engine}}, as it is an open-source project. \\
 Besides this, there is another important archive which contains the main game code and assets (maps, models). It can be found on the official website\footnote{\url{https://openarena.ws/download.php}}. One important
 detail is that it must be placed at a default filepath: \textbf{.local/share/OpenArena/} unless another one is mentioned while creating the executable file. \\ \\
@@ -68,7 +68,7 @@ called by kraft\footnote{\url{https://unikraft.org/docs/cli}}, a CLI companion t
 \subsection{Dockerfile}
 The \textbf{Dockerfile}\footnote{\url{https://docs.docker.com/reference/dockerfile/}} is responsible for creating the file system. As it follows the phylosophy of unikernels, it contains the minimal dependencies only,
 necessary and sufficient to run the application. \\
-The Docker image bundles an OpenArena ELF file, compiled from sources files, along with the OpenArena game code. \\
+The Docker image bundles an OpenArena ELF file, compiled from sources files, along with the OpenArena game code. \\ \\
 To satisfy runtime dependencies identified by the \textit{ldd}\footnote{\url{https://man7.org/linux/man-pages/man1/ldd.1.html}} utility, the C library (libc) and the math library (libm) are included too.
 The image also exposes UDP port 27960, which is the default OpenArena game port, allowing clients to connect and play over the network. \\
 
@@ -118,14 +118,14 @@ Once the build is finished, the OpenArena server is ready to be launched. For \t
 kraft run --rm -M 2048M -p 27960:27960/udp --plat qemu --arch x86_64 .
 \end{lstlisting}
 \\
-During the running phase, the kraft tool leverages QEMU to virtualize the environment produced during the build stage. Within this virtualized runtime, the ELF Loader has a significant job: it is responsible for loading and preparing the OpenArena server for execution. \\
+During the running phase, the kraft tool leverages QEMU to virtualize the environment produced during the build stage. Within this virtualized runtime, the ELF Loader has a significant job: it is responsible for loading and preparing the OpenArena server for execution. \\ \\
 This process begins after the Unikraft booting procedure has completed, marking the transition from system initialization to application-level control.
-This involves opening and analyzing the ELF binary using the libelf library. It includes reading the file headers, mapping the segments into memory using mmap, and setting appropriate memory protections. \\
-The data collected is then stored in a context structure that encapsulates all necessary runtime information. \\
-As soon as the context is fully populated, the ELF Loader uses it to create a new thread designated to run the server. \\
-After completing these steps, the thread is scheduled for execution, initiating the server startup funtions. \\
+It involves opening and analyzing the ELF binary using the libelf library. It includes reading the file headers, mapping the segments into memory using mmap, and setting appropriate memory protections. \\ \\
+The data collected is then stored in a context structure that encapsulates all necessary runtime information.
+As soon as the context is fully populated, the ELF Loader uses it to create a new thread designated to run the server. \\ \\
+After completing these steps, the thread is scheduled for execution, initiating the server startup functions. \\
 \\
-\fig[scale=0.75]{./src/img/run_phase.drawio.png}{img:run_phase}{ELF Loader during Run Phase}
+\fig[scale=0.6]{./src/img/run_phase.drawio.png}{img:run_phase}{ELF Loader during Run Phase}
 \\  
 \section{Running in Native Compatibility Mode}
 Running in native compatibility mode involves working with low-level tools and principles such as make, gcc, kconfig, and qemu directly.
@@ -140,11 +140,11 @@ This time, the native compatibility mode revolves around three files: Makefile, 
 \subsection{Makefile}
 The Makefile file is used to specify the path of the Unikraft repository and other variables such as external libraries that the OpenArena server needs to use:
 \begin{itemize}
-    \item lib-musl presents the Unikraft port of musl\footnote{\url{https://musl.libc.org/}}, a C standard library built on top of the Linux system call API.
+    \item libmusl presents the Unikraft port of musl\footnote{\url{https://musl.libc.org/}}, a C standard library built on top of the Linux system call API.
     Its usage for the server is obvious, providing support for memory management, string manipulations and so on;
-    \item lib-lwip is the Unikraft port of the lwIP network stack which was also used in the previous chapter.
+    \item liblwip is the Unikraft port of the lwIP network stack which was also used in the previous chapter.
     As the application has a client-server design and the communication is done over the network, importing it is obligatory;
-    \item lib-zlib integrates the Unikraft port of the zlib\footnote{\url{https://github.com/madler/zlib}}, a general purpose data compression library.
+    \item libzlib integrates the Unikraft port of the zlib\footnote{\url{https://github.com/madler/zlib}}, a general purpose data compression library.
     This allows the server to load the game code dinamically at runtime.
 \end{itemize}
 However, taking into consideration its rules, one can notice that this is a wrapper around the Unikraft core Makefile.
@@ -255,6 +255,15 @@ default y
 \end{lstlisting}
 \\
 \subsection{Build Phase}
-Build
+With the main configuration files properly set up, the build phase can almost begin. \\ \\ One additional step is packaging the game code into a CPIO archive, which serves as the file system for the unikernel.
+At runtime, the server will load resources like maps, characters and weapons from this archive. \\ \\
+Next, the appropiate target architecture and platform -in this case, x86 with KVM/QEMU- must be selected.
+This is done using the \textit{make menuconfig} tool introduced earlier. \\ \\
+The build process is kicked off using the \textit{make} command which triggers the Makefile. 
+As previously mentioned, this file delegates the actual workflow to the Unikraft main Makefile. \\ \\
+Finally, during the build process, all the Makefile.uk files (from the Unikraft core and external libraries) are evaluated and the selected files are compiled and linked to produce the unikernel image.
+\\
+\fig[scale=0.4]{./src/img/build_local_native.png}{img:build_local_native}{Build Phase}
+\\  
 \subsection{Run Phase}
-Run
+Runa
