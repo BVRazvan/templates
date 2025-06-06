@@ -4,23 +4,17 @@
 \section{Motivation}
 \label{sec:motivation}
 
-Traditional cloud architectures often rely on full-fledged virtual machines or containers, which, while
-flexible, come with significant overhead in resource consumption, boot time, and security exposure.
-In contrast, unikernels offer a lightweight option that dramatically reduces the attack surface and simplifies deployment. \\
-\\
-Despite these advantages, unikernels remain underused compared to conventional cloud architectures. Therefore, as Unikraft currently
-lacks gaming-related projects, it makes this an ideal opportunity to validate the viability of unikernels in a performance-critical domain. \\
-\\
-Gaming is a globally popular and technically demanding field, often serving as a benchmark for responsiveness and scalability.
-Demonstrating that Unikraft can handle such workloads opens doors for broader adoption. \\
-\\
-Furthermore, the project allows for a technical evaluation between Unikraft's binary compatibility mode and native mode, offering insights into the
-trade-offs between rapid porting and optimal performance. The benchmarks and results from this work could serve as reference points for future
-porting efforts. \\
-\\
-Ultimately, promoting the use of unikernels in gaming has the potential to elevate the visibility of projects like Unikraft. It can help showcase
-the practical value of unikernels to a wider audience - including developers, researchers, and companies - which in turn could spark increased interest,
-community contributions and industry investment in unikernel-based systems.
+Conventional cloud infrastructures tend to use full-fledged virtual machines or containers, which are flexible but inefficient with resource use, boot time, and security risks.
+
+In contrast, unikernels provide a lightweight alternative that greatly diminishes the deployment surface area and simplifies attack surface area.
+
+Compared to conventional cloud architectures, unikernels are still under-utilised, despite the advantages. Unikraft lacks gaming-relevant projects, so this provides an ideal chance to test the practicality of unikernels in gaming, a performance-driven domain.
+
+Anyone around the globe, whether young or old, knows and enjoys video games. Sustainability, responsiveness, and scalability make gaming a demanding market. Showing that Unikraft is able to manage these workloads would make many people open to using it.
+
+Additionally, the project enables a technical assessment between Unikraft's native and binary compatibility modes, offering perspectives into the trade-offs of quick adaptation versus best performance. The outcomes of the benchmarks and ensuing work done on them could provide valuable reference points for future efforts made on porting.
+
+Finally, in the eyes of many, gaming are considered to be a powerful medium to boost the visibility of projects like Unikraft. This can demonstrate the practical significance of unikernels to many, even those outside the fields of development or research.
 
 
 \section{Objectives}
@@ -28,10 +22,11 @@ community contributions and industry investment in unikernel-based systems.
 
 The key objectives of this thesis are:
 \begin{itemize}
-    \item Run an OpenArena server from scratch (source files).
-    \item Port the server to Unikraft in binary compatibility mode using the existing libelf library and a Dockerfile-based root filesystem.
-    \item Port the server to Unikraft in native mode by creating an external library containing the required source files and dependencies.
-    \item Perform benchmarks to compare the two approaches.
+    \item Build and run an OpenArena server from scratch, starting from the source files;
+    \item Port the server to Unikraft in binary compatibility mode using the \textit{app-elfloader} which handles runtime ELF loading and a Dockerfile-based root filesystem'
+    \item Port the server to Unikraft in native compatiblity mode, integrating it directly into Unikraft build system;
+    \item Package the server into an external Unikraft library to simplify integration and selection via the Kconfig menu;
+    \item Perform benchmarking and performance comparisons between the binary and native compatiblity modes.
 \end{itemize}
 
 \section{Use Cases}

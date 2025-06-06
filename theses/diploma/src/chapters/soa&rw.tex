@@ -1,22 +1,19 @@
-\chapter{Related Work and State of the Art}
+\chapter{Related Work}
 \label{chapter:soa&rw}
-
-\section{Related Work}
-\label{sec:rw}
 At the moment of writing, there is no online evidence about any unikernel based on a game server. Instead, a few unikernel projects are briefly described, which
 can be candidates for this job.
-\subsection{MirageOS}
-MirageOS\footnote{\url{https://mirage.io/}} is a library operating system written in the OCaml language that constructs unikernels for secure, high-performance networking applcations.
-\subsection{IncludeOS}
-IncludeOS\footnote{\url{https://www.includeos.org/}} allows you to run your application in the cloud without an operating system. It adds operating system functionality to your application
-allowing you to create performant, secure and resource efficient virtual machines.
-\subsection{OSv}
-OSv\footnote{\url{https://osv.io/}} is an open-source modular unikernel designed to run unmodified Linux applications securely on micro-VMs in the cloud.
-\section{State of the Art}
-\label{sec:soa}
-So far, the following steps have been completed:
-\begin{itemize}
-    \item Ran an OpenArena server from scratch (source files).
-    \item Ported the server to Unikraft in binary compatibility mode using the existing libelf library and a Dockerfile-based root filesystem.
-    \item Ported the server to Unikraft in native mode by creating an external library containing the required source files and dependencies.
-\end{itemize}
+\section{MirageOS}
+MirageOS\footnote{\url{https://mirage.io/}} is a unikernel developed OCaml programming language.
+Instead of running on top of a general-purpose operating system, MirageOS applications are compiled along with only the OS components they need, resulting in a single-purpose unikernel. \\ \\
+Given that it is built in OCaml, MirageOS takes advantage of type safety and functional programming.
+It is a great fit for network services like DNS or VPN servers taking into consideration that performance and reliability are key. \\
+However, there is a tradeoff. OCaml foundation makes it less practical for game server development.
+Therefore, rewriting them in OCaml would take a lot of time. Even so, MirageOS proves how minimal and secure a unikernel can be.
+\section{IncludeOS}
+IncludeOS\footnote{\url{https://www.includeos.org/}} is a unikernel that focuses on running applications directly on virtual machines.
+It is created in C++, meaning that a server like the OpenArena one could be ported more easily.
+IncludeOS should be used in infrastructures where multiple instances run in parallel. For example, game lobbies in the case of OpenArena.
+\section{OSv}
+OSv\footnote{\url{https://osv.io/}} is a unikernel that tries to run unmodified applications, somehow similar with the binary compatibility mode provided by Unikraft, which will be detailed later. \\ \\
+IncludeOS benefits from the fact that it is written in C++, which is much closer to the language used by most game engines. \\ \\
+Despite that is not as minimal as MirageOS or IncludeOS, it is easier to integrate and can still offer performance and resource usage optimiations.

@@ -51,65 +51,21 @@ Also, it provides a structural way to define configuration menus and dependencie
 \fig[scale=0.3]{./src/img/kconfig.png}{img:kconfig}{Kconfig menu interface\footnote{\url{https://docs.kernel.org/kbuild/kconfig-language.html}}}
 \\
 Using these two mechanisms, the process of gluing components together to create unikernels becomes much more structured, intuitive and, above all, easier.
+\section{OpenArena}
+\label{sec:openarena}
 
+OpenArena\footnote{\url{https://openarena.ws/smfnews.php}} is an open-source multiplayer first-person shooter game that was first released in 2005.
+It is written in C\footnote{\url{https://github.com/OpenArena/engine}} and is based on the Quake III Arena engine, originally developed by id Software.
+OpenArena retains the same core while offering a game with its unique characteristics and community-driven development.
 
+A key feature of OpenArena is its client-server architecture, which allows players to host their own game servers, join multiplayer matches, and modify the game extensively.
+It supports game modifications (mods), allowing custom rulesets, new maps, and gameplay mechanics to be introduced.
 
-%This is an example of a footnote \footnote{\url{www.google.com}}. You can see here a reference to \labelindexref{Section}{sub-sec:proj-objectives}.
+The game assets, including textures, sounds and configurations, are packaged in .pk3\footnote{\url{https://doomwiki.org/wiki/PK3}} files, making it easy for users to create and distribute custom content.
 
-%Here we have defined the CS abbreviation.\abbrev{CS}{Computer Science} and the UPB abbreviation.\abbrev{UPB}{University Politehnica of Bucharest}
-
-%\subsection{Project Objectives}
-%\label{sub-sec:proj-objectives}
-
-
-
-%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
-
-%We can also have citations like \cite{iso-odf}.
-
-%\subsection{Related Work}
-
-%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
-
-
-%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
-
-
-%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean aliquam lectus vel orci malesuada accumsan. Sed lacinia egestas tortor, eget tristiqu dolor congue sit amet. Curabitur ut nisl a nisi consequat mollis sit amet quis nisl. Vestibulum hendrerit velit at odio sodales pretium. Nam quis tortor sed ante varius sodales. Etiam lacus arcu, placerat sed laoreet a, facilisis sed nunc. Nam gravida fringilla ligula, eu congue lorem feugiat eu.
-
-%We are now discussing the \textbf{Ultimate answer to all knowledge}.
-%This line is particularly important it also adds an index entry for \textit{Ultimate answer to all knowledge}.\index{Ultimate answer to all knowledge}
-
-%\subsection{Demo listings}
-
-%We can also include listings like the following:
-
-% Inline Listing example
-% \lstset{language=make,caption=Application Makefile,label=lst:app-make}
-% \begin{lstlisting}
-% CSRCS = app.c
-% SRC_DIR =..
-% include $(SRC_DIR)/config/application.cfg
-% \end{lstlisting}
-
-%Listings can also be referenced. References don't have to include chapter/table/figure numbers... so we can have hyperlinks \labelref{like this}{lst:makefile-test}.
-
-%\subsection{Tables}
-
-%We can also have tables... like \labelindexref{Table}{table:reports}.
-
-%\begin{center}
-%\begin{table}[htb]
-%  \caption{Generated reports - associated Makefile targets and scripts}
-%  \begin{tabular}{l*{6}{c}r}
-%    Generated report & Makefile target & Script \\
-%    \hline
-%    Full Test Specification & full_spec & generate_all_spec.py  \\
-%    Test Report & test_report & generate_report.py  \\
-%    Requirements Coverage & requirements_coverage &
-%    generate_requirements_coverage.py   \\
-%    API Coverage & api_coverage & generate_api_coverage.py  \\
-%  \end{tabular}
-%  \label{table:reports}
-%\end{table}
-%\end{center}
+Despite being nearly two decades old, OpenArena remains actively played today, particularly within niche gaming communities and enthusiasts of classic arena shooters.
+\\
+\\
+\\
+\fig[scale=0.7]{./src/img/oa-gp2-modified.png}{img:oa-gp2-modified}{OpenArena gameplay}
+\\
