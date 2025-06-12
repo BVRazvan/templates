@@ -1,3 +1,19 @@
 \chapter{Testing}
-
-\section{TODOs}
+Up until now, diverse methods of integrating an OpenArena server have been detailed, but the testing part is yet to be tackled.
+It has a significant role, ensuring the correctness of the implementations.
+\section{Introducing OpenArena Client}
+Given that OpenArena has a client-server design, it is important to briefly explain the client side too, for a rounded understanding of the infrastructure. \\
+The OpenArena client is primary represented by the audio and video graphics rendering libraries. Its core library is OpenGL\footnote{\url{https://www.opengl.org/}}, but
+the used version is an old one. \\
+As the server runs in an virtual environment provided by KVM/QEMU and the clients run locally, there is some networking configuration done. Therefore, the server side
+uses bridging to enable the guest system to appear on the same network as the host. This is achieved by setting up a bridge interface and attaching the unikernel
+network interface to it, similar to what the figure\footnote{\url{https://www.techtarget.com/searchitoperations/tip/Adding-an-additional-virtual-bridge-to-a-KVM-environment}} below suggests.
+\fig[scale=0.75]{./src/img/bridging.pdf}{img:bridging}{Role of Virtual Bridge}
+\section{Gameplay Simulation}
+A solution for testing the server is interacting with the clients, so called game players.
+In order to achieve it, a Python script has been used to simulate a gameplay environment, which leverages the Pexpect module.
+That is, Pexpect spawns child application and controls them as if a human were typing commands. \\ \\
+Therefore, the script creates a thread for each client and employs Pexpect to generate the OpenArena clients.
+A client stays connected for 30 seconds. During this time, it does certain actions: moves in a direction, shoots for a short amount of time.
+After this, a delay time of 15 seconds takes place and then the cycle start again.
+\fig[scale=1]{./src/img/testing.drawio.pdf}{img:testing}{Testing Environment}

@@ -15,19 +15,19 @@
 Unikernels\footnote{\url{https://wiki.xenproject.org/wiki/Unikernels}} are specialized, single-address-space operating systems that offer benefits over well-known alternatives in terms of security, size, and performance.
 Their core principle lie in stripping away unnecessary components of the kernel, leaving only the essential code to run a specific application.
 
-Often compared to containers and virtual machines, these promise better resource efficiency\footnote{\url{https://unikraft.org/docs/concepts/efficiency}} and security\footnote{\url{https://unikraft.org/docs/concepts/security}} due to their minimalistic nature.
+Often compared\footnote{\url{https://unikraft.org/docs/concepts}} to containers and virtual machines, these promise better resource efficiency\footnote{\url{https://unikraft.org/docs/concepts/efficiency}} and security\footnote{\url{https://unikraft.org/docs/concepts/security}} due to their minimalistic nature.
 Therefore, these results\footnote{\url{https://unikraft.org/docs/concepts/performance}} make unikernels an attractive choice for cloud computing and edge computing environments.
 
 
 In this context, Unikraft\footnote{\url{https://unikraft.org/}} emerges as an open-source community that leverages the potential of unikernels, facilitating this process by providing modular, reusable components that can be customized for specific use cases, ensuring that only the required libraries and functionalities are included, further optimizing the binary image.
 \\
 \\
-\fig[scale=0.4]{./src/img/vm-c-uk.png}{img:vm-c-uk}{Methods for running applications\footnote{\url{https://unikraft.org/docs/concepts}}}
+\fig[scale=0.4]{./src/img/vm-c-uk.png}{img:vm-c-uk}{Methods for running applications}
 \section{Virtualization and QEMU}
 \label{sec:virtqemu}
-Virtualization\footnote{\url{https://www.ibm.com/think/topics/virtualization}} is a technology capable of dividing physical resources into multiple virtual units for particular use, facilitating
+Virtualization\footnote{\url{https://www.ibm.com/think/topics/virtualization}} is a technology capable of dividing physical resources into multiple virtual units\footnote{\url{https://www.cherryservers.com/blog/virtualization-vs-containerization}} for particular use, facilitating
 isolation, security and efficient usage of the underlying hardware. \\
-\fig[scale=0.3]{./src/img/virtualization.png}{img:virtualization}{Example of architecture for virtualization\footnote{\url{https://www.cherryservers.com/blog/virtualization-vs-containerization}}}
+\fig[scale=0.3]{./src/img/virtualization.png}{img:virtualization}{Example of architecture for virtualization}
 \\
 QEMU\footnote{\url{https://www.qemu.org/}} (Quick EMUlator) is an open source, cross-platform, system emulator and virtualizer. It supports multiple host architectures, including x86 and ARM, and operating systems, such as Linux OS, macOS and Windows. \\
 \\
@@ -35,20 +35,19 @@ QEMU system emulation offers a virtual model of a machine (processing units, mem
 better performance.
 \\
 \\
-Emulation works by using a technique named dynamic translation\footnote{\url{https://www.qemu.org/docs/master/devel/tcg.html}}
+Emulation works by using a technique named dynamic translation\footnote{\url{https://www.qemu.org/docs/master/devel/tcg.html}}\footnote{\url{https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/821395464/QEMU+User+Documentation}}
 where guest instruction set is converted into the equivalent host machine instructions and ran locally, to have then the results mapped back.
-\\
-\fig[scale=0.3]{./src/img/dynamic-translation.png}{img:dynamic-translation}{Dynamic translation flow\footnote{\url{https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/821395464/QEMU+User+Documentation}}}
+\fig[scale=0.3]{./src/img/dynamic-translation.png}{img:dynamic-translation}{Dynamic translation flow}
 \section{GNU make and Kconfig}
 GNU make\footnote{\url{https://www.gnu.org/software/make/manual/make.html}} is a build automation tool used to compile software components of a project.
-It defines a set of rules, dependencies and commands that specify how to transform source code into executable programs or other targets.
+It defines a set of rules, dependencies and commands that specify how to transform source code into executable programs or other targets\footnote{\url{https://blog.devgenius.io/makefiles-a-practical-guide-techniques-and-templates-d7d99047bf63}}.
 \\
-\fig[scale=0.3]{./src/img/make.png}{img:make}{General structure of a Makefile\footnote{\url{https://blog.devgenius.io/makefiles-a-practical-guide-techniques-and-templates-d7d99047bf63}}}
+\fig[scale=0.3]{./src/img/make.png}{img:make}{General structure of a Makefile}
 \\
 Kconfig\footnote{\url{https://docs.kernel.org/kbuild/kconfig-language.html}} is a configuration system originally developed for the Linux kernel. It is designed to manage complex build-time options.
 Also, it provides a structural way to define configuration menus and dependencies, allowing users to customize features through tools like \textit{menuconfig}.
 \\
-\fig[scale=0.3]{./src/img/kconfig.png}{img:kconfig}{Kconfig menu interface\footnote{\url{https://docs.kernel.org/kbuild/kconfig-language.html}}}
+\fig[scale=0.3]{./src/img/kconfig.png}{img:kconfig}{Kconfig menu interface}
 \\
 Using these two mechanisms, the process of gluing components together to create unikernels becomes much more structured, intuitive and, above all, easier.
 \section{OpenArena}
