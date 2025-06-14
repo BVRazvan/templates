@@ -6,11 +6,11 @@ The initial step completed is building and running the OpenArena server locally 
 how the server works under the hood. \\ \\
 Therefore, the archive with its engine is downloaded from GitHub\footnote{\url{https://github.com/OpenArena/engine}}, as it is an open-source project. \\
 Besides this, there is another important archive which contains the main game code and assets (maps, models). It can be found on the official website\footnote{\url{https://openarena.ws/download.php}}. One important
-detail is that it must be placed at a default filepath: \textbf{.local/share/OpenArena/} unless another one is mentioned while creating the executable file. \\ \\
+detail is that it must be placed at a default filepath: \textbf{.local/share/OpenArena/} unless another one is mentioned while creating the executable file. \\
 Finally, the server application is compiled using the GNU make utility, offering multiple rules and targets for shaping the output to conform to specific needs. 
-\fig[scale=0.66]{./src/img/build_local.drawio.pdf}{img:build_local}{The big picture of build components}
+\fig[scale=0.665]{./src/img/build_local.drawio.pdf}{img:build_local}{The big picture of build components} \\
 During runtime, the game content is loaded, providing various textures for maps, players and guns.
-\fig[scale=0.66]{./src/img/run_local.drawio.pdf}{img:run_local}{The big picture of run components}
+\fig[scale=0.665]{./src/img/run_local.drawio.pdf}{img:run_local}{The big picture of run components}
 \section{Diving into Engine Components}
 The OpenArena is structured into several modular components, each responsible for a specific aspect of the game functionality.
 This separation ensures modularity, adaptability and scalability. \\ \\ 
@@ -95,7 +95,7 @@ Having these two files set, the build phase can start. For \textbf{building} the
 kraft build --no-cache --no-update --plat qemu --arch x86_64 .
 \end{lstlisting}
 \\
-Internally, two things happen. First, a Docker image is generated based on the Dockerfile. This image is then converted into a CPIO archive to be integrated into the unikernel file system.
+Internally, two things happen. First, a Docker image is generated based on the Dockerfile. This image is then converted into a CPIO archive to be integrated into the unikernel file system. \\ \\
 Subsequently, the unikernel itself is constructed by downloading and individually compiling the specified components, and assembling them into the final unikernel image.
 \fig[scale=0.9]{./src/img/build_phase.drawio.pdf}{img:build_phase}{Build Phase}
 \subsection{Run Phase}
@@ -394,7 +394,7 @@ int main(int argc, char *argv[])
 \section{Running from the External Unikraft Library}
 With the addition of previously detailed files, the OpenArena server can now be brought to life as a Unikraft library. \\
 These provide the necessary configuration and initialization logic to transform the engine into a functional unikernel component.
-\fig[scale=0.605]{./src/img/external_library.drawio.pdf}{img:exteral_library}{OpenArena Server as External Unikraft Library}
+\fig[scale=0.5]{./src/img/external_library.drawio.pdf}{img:exteral_library}{OpenArena Server as External Unikraft Library}
 \subsection{Build Phase}
 Once the external library is created, the build phase becomes significantly simpler. \\ \\
 Unlike the native compatibility mode, the Makefile.uk is no longer needed.
@@ -403,7 +403,7 @@ The top-level Makefile specifies the same external libraries used previously and
 lib-openarena. \\
 As in the last setup, the game code must once again be packaged into a CPIO archive, which justifies the inclusion
 of the file system component.
-\fig[scale=0.605]{./src/img/build_local_external.drawio.pdf}{img:build_local_external}{Build Phase} \\ \\ \\ \\
+\fig[scale=0.5]{./src/img/build_local_external.drawio.pdf}{img:build_local_external}{Build Phase}
 \subsection{Run Phase}
 The run phase closely resembles that of the native compatibility mode. \\ \\
 The primary difference lies in the control flow after the boot sequence: execution begins in the main function provided
