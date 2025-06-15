@@ -1,4 +1,31 @@
-\chapter{Comparisons}
+\chapter{Evaluation}
+As this project approaches its end, it is a suitable moment to provide information regarding a few metrics. \\
+The hardware used has the following specifications:
+\begin{itemize}
+    \item CPU: Intel(R) Core(TM) i5-7300HQ CPU @ 2.50GHz;
+    \item Architecture: x86_64.
+\end{itemize}
+It is worth mentioning that each numeric value shown here has been calculated as an average of ten runs.
+\section{Binary Compatibility Mode}
+\subsection{Build Time}
+\fig[scale=0.45]{./src/img/build_time_bincompat}{img:build_time_bincompat}{Build Time}
+As the figure above suggests, the build process has been divided into three parts:
+\begin{itemize}
+    \item Build application refers to the part when the source files of the OpenArena server are compiled and linked together into an ELF file;
+    \item Build file system measures the time to create the Docker image consisting of OpenArena game code along with other necessary libraries;
+    \item Build kernel counts the time taken to build the final unikernel image, once the application and the file system are ready;
+    \item Additionally, build total is self-explanatory summing up the values.    
+\end{itemize}
+\subsection{Build Size}
+In this mode, the file system comes as part of the unikernel. As one can see, the sizes are quite similar.
+That being said, the additional libraries required to build the kernel are minimal, denoting the small attacking surface. 
 
-\section{Measuring Build Time}
-\section{Measuring Load Time}
+\fig[scale=0.45]{./src/img/build_size_bincompat}{img:build_size_bincompat}{Build Size}
+\section{Native Compatibility Mode}
+\subsection{Build Time}
+The build kernel part in native compatibility mode also includes compiling the application, providing better customizability. Unlike the other method, the file system is attached during runtime.
+\fig[scale=0.45]{./src/img/build_time_nativ}{img:build_time_nativ}{Build Time}
+\\
+\subsection{Build Size}
+As previously noted, the kernel contains only the required libraries while the file system is embedded during runtime with the aid of \textit{qemu} command.
+\fig[scale=0.45]{./src/img/build_size_nativ}{img:build_size_nativ}{Build Size}
