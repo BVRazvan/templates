@@ -5,8 +5,8 @@ Wrapping up, this project successfully extends the horizon of applicability of U
 Throughout the thesis, the OpenArena server has been ported to Unikraft using all available methods, with detailed descriptions of required files
 during the build and run phases:
 \begin{itemize}
-    \item Binary compatibility mode, thanks to the Unikraft design which permits running of Linux binaries on top of it. Here,
-    the ELF Loader has a significant job during runtime: load the server into memory and schedule it for execution;
+    \item Binary compatibility mode, thanks to the Unikraft design which permits running Linux binaries on top of it.\@ Here,
+    the ELF Loader has a significant job during runtime:\@ load the server into memory and schedule it for execution;
     \item Native compatibility mode, where the kernel is built using first-principles tools. It is defined by the fine control over the
     build phase.
     \item External Unikraft library, which aligns with the philosophy of Unikraft: modular and reusable components.
@@ -15,8 +15,8 @@ On a different note, working on this offered valuable experience with open-sourc
 Moreover, it has been a real challenge to understand already-built infrastructure, adapt to it, and improve it for the sake of the objectives. 
 \section{Future Work}
 Now that an initial effort to integrate gaming servers into unikernels has been made, many possibilities have arisen. \\ \\
-For example, OpenArena uses an old version of OpenGL (1.3). A natural step forward would be to target games that use newer, more complex versions.
+For example, OpenArena uses an old version of OpenGL (1.3).\@ A natural step forward would be to target games that use newer, more complex versions.
 This would imply moderate work if the game is written in C, as Unikraft is primarily based on this programming language. \\ \\
-Another interesting idea is to aim to port games developed using modern frameworks: Unity\footnote{\url{https://unity.com/}}, Unreal Engine\footnote{\url{https://www.unrealengine.com/en-US}}, or
+Another interesting idea is to aim to port games developed using modern frameworks:\@ Unity\footnote{\url{https://unity.com/}}, Unreal Engine\footnote{\url{https://www.unrealengine.com/en-US}}, or
 Godot Engine\footnote{\url{https://godotengine.org/}}. However, it would take the work required to another level due to runtime requirements or toolchain dependencies.
 \label{fw}

@@ -4,20 +4,20 @@
 \section{Motivation}
 \label{sec:motivation}
 
-Conventional cloud infrastructures tend to use full-fledged virtual machines or containers, which are flexible but inefficient with resource use, boot time, and security risks. \\ \\
-In contrast, unikernels provide a lightweight alternative that greatly diminishes the deployment surface area and simplifies attack surface area. \\ \\
-Compared to usual cloud architectures, unikernels are still under-utilised, despite the advantages. Unikraft lacks gaming-relevant projects, so this provides an ideal chance to test the practicality of unikernels in gaming, a performance-driven domain. \\ \\
-Anyone around the globe, whether young or old, knows and enjoys video games. Sustainability, responsiveness, and scalability make gaming a demanding market. Showing that Unikraft is able to manage these workloads would make many people open to using it. \\ \\
-Additionally, the project enables a technical assessment between Unikraft's native and binary compatibility modes, offering perspectives into the trade-offs of quick adaptation versus best performance. The outcomes of the evaluation and ensuing work done on them could provide valuable reference points for future efforts made on other integrations. \\ \\
-Finally, in the eyes of many, gaming is considered to be a powerful medium to boost the visibility of projects like Unikraft. This can demonstrate the practical significance of unikernels to a wider audience, even those outside the fields of development or research.
+Conventional cloud infrastructures tend to use full-fledged virtual machines or containers, which are flexible but inefficient in terms of resource use, boot time, and security risks. \\ \\
+In contrast, unikernels provide a lightweight alternative that significantly diminishes the deployment surface area and simplifies the attack surface area. \\ \\
+Unlike usual cloud architectures, unikernels are still underutilized despite the advantages. Unikraft lacks gaming-relevant projects, providing an ideal chance to test the practicality of unikernels in gaming, a performance-driven domain. \\ \\
+Anyone around the globe, whether young or old, knows and enjoys video games.\@ Sustainability, responsiveness, and scalability make gaming a demanding market. Showing that Unikraft can manage these workloads would make many people open to using it. \\ \\
+Additionally, the project enables a technical assessment between Unikraft native and binary compatibility modes, offering perspectives into the trade-offs of quick adaptation versus best performance.\@ The evaluation outcome and the work done on it could provide valuable reference points for future efforts made on other integrations. \\ \\
+Finally, gaming is considered a powerful medium to boost the visibility of projects like Unikraft.\@ This can demonstrate the practical significance of unikernels to a wider audience, even those outside the fields of development or research.
 \section{Objectives}
 \label{sec:objecties}
 
 The key objectives of this thesis are:
 \begin{itemize}
     \item Build and run an OpenArena server from scratch, starting from the source files;
-    \item Port the server to Unikraft in binary compatibility mode using the \textit{app-elfloader} which handles runtime ELF file loading from the Dockerfile-based filesystem;
-    \item Port the server to Unikraft in native compatiblity mode, integrating it directly into Unikraft build system;
+    \item Port the server to Unikraft in binary compatibility mode using the \textit{app-elfloader}, which handles runtime ELF file loading from the Dockerfile-based filesystem;
+    \item Port the server to Unikraft in native compatibility mode, integrating it directly into the Unikraft build system;
     \item Package the server into an external Unikraft library to simplify integration and selection via the Kconfig menu;
     \item Measure build size and build time in binary and native compatibility modes.
 \end{itemize}
@@ -27,13 +27,12 @@ The key objectives of this thesis are:
 
 \subsection{Main Use Case}
 \label{subsec:mainusecases}
-This project provides a different environment for an OpenArena server to run within. Therefore, users
-can opt for this option of hosting a game server, integrated into a Unikraft unikernel, offering
-less overhead and increased robustness. \\
+This project provides a different environment within which an OpenArena server can run.\@ Therefore, users
+can opt for hosting a game server integrated into a Unikraft unikernel, which offers less overhead and increased robustness. \\
 This demonstrates the capability of Unikraft to support complex, interactive applications.
 
 \subsection{Other Use Cases}
 \label{subsec:otherusecases}
-This work also paves the way towards gaming-related projects in Unikraft. Therefore, it can be perceived
+This work also paves the way for gaming-related projects in Unikraft.\@ Thus, it can be perceived
 as a pioneer for future research and development in this area.
 
