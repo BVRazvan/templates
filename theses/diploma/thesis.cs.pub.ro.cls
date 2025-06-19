@@ -157,7 +157,30 @@
 
 \newenvironment{frontmatter}{\pagenumbering{roman}}{\newpage \pagenumbering{arabic}}
 
-\renewenvironment{abstract}{\null\vfil\prefacesection{Abstract}}{\par\vfill\null}
+\newenvironment{sinopsis}
+{%
+  \clearpage             % start sinopsis on a new page
+  \thispagestyle{empty}  % no header/footer on sinopsis page
+  {\large\bfseries SINOPSIS \par}
+  \vspace{1em}
+  \normalfont
+  \setlength{\parindent}{0pt}
+}
+{%
+  \par\vspace{10em}       % space after sinopsis before next content
+}
+
+\renewenvironment{abstract}
+{%
+  % no \clearpage here, so no page break before abstract
+  {\large\bfseries \MakeUppercase{\abstractname} \par}
+  \vspace{1em}
+  \normalfont
+  \setlength{\parindent}{0pt}
+}
+{%
+  \par
+}
 
 \def\prefacesection#1{%
 	\chapter*{#1}
