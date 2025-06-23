@@ -3,11 +3,11 @@ Until now, diverse methods of integrating an OpenArena server have been detailed
 It plays a significant role in ensuring the correctness of the implementations.
 \section{Introducing OpenArena Client}
 Given that OpenArena has a client-server design, it is important to briefly explain the client side as well for a rounded understanding of the infrastructure. \\ \\
-The OpenArena client is primarily represented by the audio and video graphics rendering libraries. Its core library is OpenGL\footnote[1]{\url{https://www.opengl.org/}}, but
+The OpenArena client is primarily represented by the audio and video graphics rendering libraries. Its core library is OpenGL\cite{opengl}, but
 an old version is used. \\ \\
 As the server runs in a virtual environment provided by KVM/QEMU and the clients run locally, networking configuration is mandatory. Therefore, the server-side
 uses bridging to enable the guest system to appear on the same network as the host. This is achieved by setting up a bridge interface and attaching the unikernel
-network interface to it, similar to what the figure\footnote{\url{https://www.techtarget.com/searchitoperations/tip/Adding-an-additional-virtual-bridge-to-a-KVM-environment}} below suggests.
+network interface to it, similar to what the figure\cite{kvm-virtual-bridge} below suggests.
 \fig[scale=0.75]{./src/img/bridging.pdf}{img:bridging}{Role of Virtual Bridge}
 \section{Gameplay Simulation}
 A solution for testing the server is interacting with the clients, so-called game players.\@

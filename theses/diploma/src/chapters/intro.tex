@@ -5,47 +5,48 @@
 \section{Unikernels and Unikraft}
 \label{sec:uks}
 
-Unikernels\footnote[1]{\url{https://wiki.xenproject.org/wiki/Unikernels}} are specialized, single-address-space operating systems that seem  more appealing than well-known alternatives regarding security, size, and performance.\@ Their philosophy lies in eliminating unnecessary kernel components, keeping only the useful modules, required to run a specific application. \\ \\
-Due to their minimalistic nature, unikernels are often compared\footnote{\url{https://unikraft.org/docs/concepts}} with containers and virtual machines, but these promise better resource efficiency\footnote{\url{https://unikraft.org/docs/concepts/efficiency}} and security\footnote{\url{https://unikraft.org/docs/concepts/security}}.\@
-Therefore, these results\footnote{\url{https://unikraft.org/docs/concepts/performance}} highlight the potential of unikernels as the future in cloud computing and edge computing environments. \\ \\
-In this context, Unikraft\footnote{\url{https://unikraft.org/}} emerges as an open-source community that believes in the strengths of unikernels.\@
+Unikernels\cite{xen-unikernels} are specialized, single-address-space operating systems that seem  more appealing than well-known alternatives regarding security, size, and performance.\@ Their philosophy lies in eliminating unnecessary kernel components, keeping only the useful modules, required to run a specific application. \\ \\
+Due to their minimalistic nature, unikernels are often compared\cite{unikraft-concepts} with containers and virtual machines, but these promise better resource efficiency\cite{unikraft-efficiency} and security\cite{unikraft-security}.\@
+Therefore, these results\cite{unikraft-performance} highlight the potential of unikernels as the future in cloud computing and edge computing environments. \\ \\
+In this context, Unikraft\cite{unikraft-home} emerges as an open-source community that believes in the strengths of unikernels.\@
 This community project automates the build process of unikernels, providing modular, reusable components that are highly customizable, based on users preferences.
 \\
 \fig[scale=0.6]{./src/img/vm-c-uk.png}{img:vm-c-uk}{Methods for running applications}
 \section{Virtualization and QEMU}
 \label{sec:virtqemu}
-Virtualization\footnote[1]{\url{https://www.ibm.com/think/topics/virtualization}} is a technology that permits the running of multiple operating systems on the underlying hardware\footnote[2]{\url{https://www.cherryservers.com/blog/virtualization-vs-containerization}}, facilitating isolation, security, and efficient use of physical resources.
-\fig[scale=0.3]{./src/img/virtualization.png}{img:virtualization}{Example of architecture for virtualization}
+Virtualization\cite{ibm-virtualization} is a technology that permits the running of multiple operating systems on the underlying hardware\cite{cherryservers-virtualization-vs-containerization}, facilitating isolation, security, and efficient use of physical resources.
+\fig[scale=0.35]{./src/img/virtualization.png}{img:virtualization}{Example of architecture for virtualization}
 \\
-QEMU\footnote[3]{\url{https://www.qemu.org/}} (Quick EMUlator) is an open source, cross-platform system emulator and virtualizer.\@ It supports multiple host architectures, including x86 and ARM, and operating systems, like Linux OS, macOS, and Windows. \\
+QEMU\cite{qemu-home} (Quick EMUlator) is an open source, cross-platform system emulator and virtualizer.\@ It supports multiple host architectures, including x86 and ARM, and operating systems, like Linux OS, macOS, and Windows. \\
 \\
-QEMU system emulation offers a virtual model of a machine (processing units, memory storage and external devices) to run a guest OS. It is sometimes paired with other virtualization solutions, namely hypervisors\footnote[4]{\url{https://www.vmware.com/topics/hypervisor}}, for
+QEMU system emulation offers a virtual model of a machine (processing units, memory storage and external devices) to run a guest OS. It is sometimes paired with other virtualization solutions, namely hypervisors\cite{vmware-hypervisor}, for
 better performance.
 \\
 \\
-Emulation uses a technique named dynamic translation\footnote[5]{\url{https://www.qemu.org/docs/master/devel/tcg.html}}\footnote[6]{\url{https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/821395464/QEMU+User+Documentation}}
-where the guest instruction set is converted on the fly into the equivalent host machine instructions and run locally to have then the results mapped back.
-\fig[scale=0.3]{./src/img/dynamic-translation.png}{img:dynamic-translation}{Dynamic translation flow}
+Emulation uses a technique named dynamic translation\cite{qemu-tcg-doc}\cite{xilinx-qemu-user-doc} where the guest instruction set is converted on the fly into the equivalent host machine instructions and run locally to have then the results mapped back.
+\fig[scale=0.35]{./src/img/dynamic-translation.png}{img:dynamic-translation}{Dynamic translation flow}
+\newpage
 \section{GNU Make and Kconfig}
-GNU Make\footnote{\url{https://www.gnu.org/software/make/manual/make.html}} is a build automation tool used to compile software components of a project.
-It defines a set of rules, dependencies, and commands that specify how to transform source code into executable programs or other targets\footnote{\url{https://blog.devgenius.io/makefiles-a-practical-guide-techniques-and-templates-d7d99047bf63}}.
+GNU Make\cite{gnu-make-manual} is a build automation tool used to compile software components of a project.
+It defines a set of rules, dependencies, and commands that specify how to transform source code into executable programs or other targets\cite{devgenius-makefiles-guide}.
 \\
-\fig[scale=0.3]{./src/img/make.png}{img:make}{General structure of a Makefile}
+\fig[scale=0.31]{./src/img/make.png}{img:make}{General structure of a Makefile}
 \\
-Kconfig\footnote{\url{https://docs.kernel.org/kbuild/kconfig-language.html}} is a configuration system originally developed for the Linux kernel. It is designed to manage complex build-time options.\@ Also, it provides a structural way to define configuration menus and dependencies, allowing users to customize features through tools like \textit{menuconfig}.
+Kconfig\cite{kernel-kconfig-language} is a configuration system originally developed for the Linux kernel. It is designed to manage complex build-time options.\@ Also, it provides a structural way to define configuration menus and dependencies, allowing users to customize features through tools like \textit{menuconfig}.
 \\
 \fig[scale=0.3]{./src/img/kconfig.png}{img:kconfig}{Kconfig menu interface}
 \\
 Using these two mechanisms, gluing components together to create unikernels becomes much more structured, intuitive, and, above all, easier.
+\newpage
 \section{OpenArena}
 \label{sec:openarena}
 
-OpenArena\footnote[1]{\url{https://openarena.ws/smfnews.php}} is an open-source game that was released in 2005.
-It belongs to the category of multiplayer first-person shooters, presenting a client-server design while being written in C\footnote[2]{\url{https://github.com/OpenArena/engine}}.
+OpenArena\cite{openarena-news} is an open-source game that was released in 2005.
+It belongs to the category of multiplayer first-person shooters, presenting a client-server design while being written in C\cite{openarena-github}.
 It is forked from the Quake III arena engine, initially developed by id Software. OpenArena retains most of the mechanics but adds unique characteristics driven by community development. \\ \\
 As mentioned, OpenArena is built based on the client-server architecture.\@ It allows players to create and host game servers, join remote lobbies, and, most importantly, modify the game easily
 thanks to the modular approach.\@ It supports game modifications, allowing custom characters, new maps, and gameplay tactics to be added. \\ \\
-The game code, composed of textures, sounds, and configurations, is packaged into .pk3\footnote[3]{\url{https://doomwiki.org/wiki/PK3}} files. Therefore, it is easy to bring together and share custom content. \\ \\
+The game code, composed of textures, sounds, and configurations, is packaged into .pk3\cite{doomwiki-pk3} files. Therefore, it is easy to bring together and share custom content. \\ \\
 Although the game appeared two decades ago, it remains surprisingly actively played today, particularly by niche gaming groups and enthusiasts of classic arena shooters.
 \\
 \fig[scale=0.7]{./src/img/oa-gp2-modified.png}{img:oa-gp2-modified}{OpenArena gameplay}

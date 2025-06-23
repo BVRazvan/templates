@@ -3,17 +3,17 @@
 Currently, there is no online evidence of any unikernel based on a game server.\@ Instead, a few unikernel projects are briefly described and they
 can be candidates for this job.
 \section{MirageOS}
-MirageOS\footnote[1]{\url{https://mirage.io/}} is a unikernel developed using the OCaml programming language.
+MirageOS\cite{mirageio} is a unikernel developed using the OCaml programming language.
 Instead of running on top of a general-purpose operating system, MirageOS applications are compiled along with only the OS components they need, resulting in a single-purpose unikernel. \\ \\
 Given that it is built in OCaml, MirageOS takes advantage of type safety and functional programming.
 It is an excellent fit for network services like DNS or VPN servers, considering that performance and reliability are key. \\
 However, there is a tradeoff.\@ OCaml foundation makes it less practical for game server development.\@
 Therefore, rewriting them in OCaml would take much of time.\@ Even so, MirageOS proves how minimal and secure a unikernel can be.
 \section{IncludeOS}
-IncludeOS\footnote[2]{\url{https://www.includeos.org/}} is a unikernel that is built depending on the application deployed, adding
+IncludeOS\cite{includeos} is a unikernel that is built depending on the application deployed, adding
 OS functionality to it so that it can run. \\
 It is created in C++, meaning that a server like the OpenArena one could be ported more easily.
 \section{OSv}
-OSv\footnote[3]{\url{https://osv.io/}} is a unikernel that runs unmodified applications, similar to the binary compatibility mode provided by Unikraft, which will be detailed later. \\
+OSv\cite{osv} is a unikernel that runs unmodified applications, similar to the binary compatibility mode provided by Unikraft, which will be detailed later. \\
 OSv benefits from being written in C/C++, which is much closer to the language used by most game engines. \\ \\
 Although it is not as minimal as MirageOS or IncludeOS, it is easier to integrate and can still offer performance and resource usage optimizations.
